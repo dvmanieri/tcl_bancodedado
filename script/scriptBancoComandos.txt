@@ -1,0 +1,95 @@
+
+
+
+-- IMPORTANTE: pode ser que o número de ID dos professos não corresponda na hora de relizar as ações, pois
+-- quando fomos criar, tivemos que realizar o rollback e alterou o id dos professores
+
+
+
+update professor set nome_prof="Clara de almeida" where codigo_prof=1;
+
+
+
+delete from aula where codigo_professor = 2;
+delete from professor where codigo_prof = 7;
+
+
+
+
+INSERT INTO disciplina (nome_disc, ementa_disc)
+VALUES
+('Programação Web para Back-End', 'Tal disciplina aborda conceitos e técnicas para desenvolvimento de aplicativos web no lado do servidor, com foco em back-end.'),
+('Programação Web para Front-End', 'Esta disciplina explora as tecnologias e práticas para desenvolvimento de aplicações web e com foco em front-end.');
+
+SAVEPOINT savepoint_insert_disc;
+
+
+
+
+INSERT INTO disciplina (nome_disc, ementa_disc)
+VALUES
+('Programação Web para Front-End usando php', 'Esta disciplina explora as tecnologias e práticas para desenvolvimento de aplicações web e com foco em front-end.'),
+('Interface para Dispositivos Móveis', 'A disciplina aborda projetar e desenvolver interfaces de usuário para aplicativos móveis, com foco nos princípios de design e usabilidade.'),
+('Banco de Dados', 'Tal disciplina contempla conceitos fundamentais de bancos de dados, modelagem de dados e linguagens de consulta SQL.'),
+('Redes de Computadores', 'Esta disciplina aborda conceitos introdutórios sobre redes de computadores, topologias e padrões.'),
+('Sistemas Operacionais', 'A disciplina contempla conceitos fundamentais sobre sistemas operacionais, apresentando as funcionalidades dos sistemas operacionais baseados nas plataformas Windows e Linux');
+
+
+update disciplina set nome_disc="sistemas Operacionais" where codigo_disc=19;
+
+delete from disciplina where codigo_disc = 19;
+
+rollback to savepoint_insert_disc;
+
+
+
+INSERT INTO info_pessoais_aluno (cpf, nome, tel_celular_resp, email_resp)
+VALUES
+('111.222.333-44', 'Gabriel Santos', '016997788899', 'gabriel@email.com');
+
+SAVEPOINT savepoint_antes_insert;
+
+INSERT INTO info_pessoais_aluno (cpf, nome, tel_celular_resp, email_resp)
+VALUES
+('555.666.777-88', 'Amanda Costa', '016994455566', 'amanda@email.com'),
+('999.888.777-66', 'Rafael Lima', '016996633322', 'rafael@email.com'),
+('333.222.111-00', 'Carolina Oliveira', '016999911122', 'carolina@email.com'),
+('777.888.999-11', 'Rodrigo Pereira', '016993344455', 'rodrigo@email.com');
+
+UPDATE info_pessoais_aluno SET email_resp= 'o@meudominio.com' WHERE cpf = '555.666.777-88';
+
+DELETE  FROM info_pessoais_aluno WHERE cpf = '333.222.111-00';
+
+ROLLBACK TO savepoint_antes_insert;
+
+
+
+INSERT INTO curso (nome_curso, duracao_curso)
+VALUES
+('Técnico em Redes de Computadores', 20),
+('Técnico em Design Gráfico', 16);
+
+SAVEPOINT savepoint_inserts_curso;
+
+
+INSERT INTO curso (nome_curso, duracao_curso)
+VALUES
+('Técnico em Gestão de Recursos Humanos', 18),
+('Técnico em Agronegócio', 22),
+('Técnico em Logística', 16);
+
+SAVEPOINT savepoint_inserts_turma;
+
+
+
+INSERT INTO turma (qtd_alunos_tur, periodo_tur, semestre_tur)
+VALUES
+(25, 'Noite', '3 Semestre'),
+(40, 'Manhã', '1 Semestre'),
+(30, 'Noite', '4 Semestre'),
+(22, 'Tarde', '3 Semestre');
+
+DELETE FROM turma WHERE qtd_alunos_tur = 30;
+
+
+ROLLBACK TO savepoint_inserts_turma;
